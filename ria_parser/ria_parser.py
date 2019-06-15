@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from flask import current_app
+
 
 
 def get_html(url):
@@ -12,8 +12,8 @@ def get_html(url):
         print ('Some error')
         return False
 
-def get_category():
-    html = get_html(current_app.config['URL'])
+def get_category(url):
+    html = get_html(url)
     if html:
         soup = BeautifulSoup (html, 'html.parser')
         all_news = soup.find('div', class_='footer__rubric-list-item').findAll('a')
@@ -28,9 +28,9 @@ def get_category():
                 })
         return list_of_category
 
-def get_news_list():
+def get_news_list(url):
     list_of_news_links = []
-    list_of_category = get_category()
+    list_of_category = get_category(url)
 
     for link in list_of_category:
         html = get_html(link['link'])
@@ -46,9 +46,9 @@ def get_news_list():
 
     return list_of_news_links
 
-def get_text_of_news():
+def get_text_of_news(url):
     news_text = []
-    list_of_news = get_news_list()
+    list_of_news = get_news_list(url)
     for news in list_of_news:
         html = get_html(news['news_link'])
         soup = BeautifulSoup(html, 'html.parser')
