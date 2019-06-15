@@ -2,3 +2,4 @@
 __pycache__/
 ria_parser/__pycache__/
 env
+webapp.db

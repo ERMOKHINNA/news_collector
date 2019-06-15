@@ -5,9 +5,9 @@ db = SQLAlchemy()
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-
-    text = db.Column(db.Text, nullable = True)
+    title = db.Column(db.String, nullable = True)
+    url_news = db.Column(db.String, nullable = True)
     category = db.Column(db.String, nullable = True)
 
     def __repr__(self):
-        return '<News {} {}>'.format(self.category, self.text)
+        return '<News {} {} {} {}>'.format(self.id, self.category, self.title, self.url_news)
