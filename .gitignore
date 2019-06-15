@@ -1,0 +1,4 @@
+.idea/
+__pycache__/
+ria_parser/__pycache__/
+env
