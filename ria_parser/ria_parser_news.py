@@ -11,7 +11,7 @@ def get_html(url):
         return result.text
     except (requests.RequestException, ValueError):
         print('Some error')
-        return False
+        return None
 
 
 def meta_info(url):

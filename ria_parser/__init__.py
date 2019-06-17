@@ -10,10 +10,11 @@ def create_app():
 
     app.config.from_pyfile('config.py')
     db.init_app(app)
-    page_title = 'Новости'
+
 
     @app.route("/")
     def index():
+        page_title = 'Новости'
         news_category = get_news_list(current_app.config['URL'])
         for news in news_category:
             save_news(news['title'], news['news_link'], news['category'])
