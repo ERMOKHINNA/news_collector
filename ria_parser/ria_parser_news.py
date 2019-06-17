@@ -100,10 +100,17 @@ def get_news_list(url):
 ##    return news_text
 
 def save_news(title, news_link , category):
+    news_exists = News.query.filter(News.url_news == news_link).count()
+    if not news_exists:
+        news_news = News(title=title, url_news=news_link, category=category)
+        db.session.add(news_news)
+        db.session.commit()
 
-    news_news = News(title=title, url_news=news_link, category=category)
-    db.session.add(news_news)
-    db.session.commit()
+#TODO добавить теги в базу, добавить словарь слов и тэгов для анализа, сделать вывод на страницу из базы.
+#todo ПОразбираться, почему так мало новостей прилетает (всего 61 уникальная новость :()
+#todo разбить вывод на категории в отедльных вкладках
+#todo вывести дату новости
+#todo запуск парсреа по расписанию
 
 
 if __name__ == "__main__":
