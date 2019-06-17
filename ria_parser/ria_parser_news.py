@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from ria_parser.model import db, News
-
+from pprint import  pprint
 
 
 def get_html(url):
@@ -13,13 +13,43 @@ def get_html(url):
         print('Some error')
         return False
 
+
+def meta_info(url):
+    html = get_html(url)
+    soup = BeautifulSoup(html, 'html.parser')
+    all_news = soup.findAll('meta')
+    tags_list = []
+    for item in all_news:
+        try:
+            if item['name'] == 'analytics:rubric':
+                category = item['content']
+                tags_list.append({
+                    'category': category,
+                })
+
+            elif item['name'] == 'analytics:tags':
+                tags = item['content']
+
+                tags_list.append({
+
+                    'tags': tags
+
+                })
+
+
+        except KeyError:
+            pass
+    return tags_list
+
 def get_category(url):
     html = get_html(url)
     if html:
         soup = BeautifulSoup(html, 'html.parser')
         all_news = soup.find('div', class_='footer__rubric-list-item').findAll('a')
+
         list_of_category = []
         for news in all_news:
+
             category = news.text
             link = news['href']
             list_of_category.append(
@@ -40,19 +70,21 @@ def get_news_list(url):
             all_links_in_category = soup.findAll('div', class_='lenta__item')
             for links in all_links_in_category:
                 news_link = links.find('a')['href']
-                title = links.find('page_title')
-                url_news = links.find('page_url')
+                title = links.find('span', class_='lenta__item-text').text
+
+                category = meta_info(news_link)[0]['category']
                 list_of_news_links.append ({
                     'news_link': news_link,
-                    'category': link['category'],
-                    'url_news': url_news
+                    'category': category,
+
+                    'title': title
                 })
 
-                category = link['category']
- ##               save_news(title, category, url_news)
 
 
     return list_of_news_links
+
+
 
 ##def get_text_of_news(url):
 ##    news_text = []
@@ -67,12 +99,14 @@ def get_news_list(url):
 ##        })
 ##    return news_text
 
-##def save_news(title, url_news, category):
+def save_news(title, news_link , category):
 
-##    news_news = News(title=title, url_news=url_news, category=category)
-##    db.session.add(news_news)
-##    db.session.commit()
+    news_news = News(title=title, url_news=news_link, category=category)
+    db.session.add(news_news)
+    db.session.commit()
 
 
 if __name__ == "__main__":
-    get_news_list('https://ria.ru')
+    pprint(get_news_list('https://ria.ru'))
+    news_base = get_news_list('https://ria.ru')
+

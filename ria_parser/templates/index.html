@@ -20,8 +20,8 @@
 
                 <h2>Новости</h2>
                 {% for category in  news_category %}
-
-                    <p>{{news_category}</p>
+                    <p>{{category.category}}</p>
+                    <p>{{category.title}}</p>
                     <hr />
                 {% endfor %}
 
