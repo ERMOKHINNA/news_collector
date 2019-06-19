@@ -19,11 +19,16 @@
             <div class = "col-8">
 
                 <h2>Новости</h2>
-                {% for category in  news_category %}
+                <!-- news_category is a Paginate object -->
+                {% for category in news_category %}
                     <p>{{category.category}}</p>
                     <p>{{category.title}}</p>
-                    <hr />
                 {% endfor %}
+                {% if news_category.has_next %}<a href="{{ url_for('index.html', page = news_category.next_num) }}">Еще >></a>{% else %} {% endif %}
+                {% if news_category.has_next %}<a href="{{ url_for('index.html', page = news_category.next_num) }}">Older posts >></a>{% else %}{% endif %}
+
+
+
 
             </div>
 
