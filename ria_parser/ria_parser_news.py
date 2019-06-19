@@ -22,33 +22,18 @@ def meta_info(url):
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
     all_news = soup.findAll('meta')
-    tags_list = []
+    tags_list = {}
     for item in all_news:
         try:
             if item['name'] == 'analytics:rubric':
                 category = item['content']
-                tags_list.append({
-                    'category': category
-                })
-
+                tags_list['category'] = category
             elif item['name'] == 'analytics:tags':
                 tags = item['content']
-
-                tags_list.append({
-
-                    'tags': tags
-                })
-
+                tags_list['tags'] = tags
             elif item['name'] == 'analytics:title':
                 title = item['content']
-
-                tags_list.append({
-
-                    'title': title
-
-                })
-
-
+                tags_list['title'] = title
         except KeyError:
             pass
     return tags_list
@@ -85,7 +70,7 @@ def get_news_list(url):
                     news_link = links.find('a')['href']
                     title = links.find('span', class_='lenta__item-text').text
 
-                    category = meta_info(news_link)[1]['category']
+                    category = meta_info(news_link)['category']
                     list_of_news_links.append ({
                         'news_link': news_link,
                         'category': category,
@@ -139,9 +124,9 @@ def get_else_news_list(url):
                 news_link = links.find('a')['href']
 
                 try:
-                    title = meta_info(news_link)[0]['title']
+                    title = meta_info(news_link)['title']
 
-                    category = meta_info(news_link)[1]['category']
+                    category = meta_info(news_link)['category']
                     list_of_news_links.append({
                         'news_link': news_link,
                         'category': category,
@@ -163,9 +148,9 @@ def get_news_list_from_main(url):
         if html:
 
             try:
-                title = meta_info(link)[0]['title']
+                title = meta_info(link)['title']
 
-                category = meta_info(link)[1]['category']
+                category = meta_info(link)['category']
                 list_of_news_from_main.append({
                     'news_link': link,
                     'category': category,
