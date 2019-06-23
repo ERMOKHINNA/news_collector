@@ -7,6 +7,17 @@ from ria_parser.__init__ import create_app
 
 app = create_app()
 
+def get_link(url):
+    html = get_html(url)
+    all_news = []
+    if html:
+        soup = BeautifulSoup(html, 'html.parser')
+        all_news1 = soup.findAll('span', class_="share")
+        for link in all_news1:
+            news_link = link['data-url']
+            all_news.append(news_link)
+        return all_news
+
 
 def get_html(url):
     try:
@@ -82,16 +93,6 @@ def get_news_list(url):
 
     return list_of_news_links
 
-def get_link(url):
-    html = get_html(url)
-    all_news = []
-    if html:
-        soup = BeautifulSoup(html, 'html.parser')
-        all_news1 = soup.findAll('span', class_="share")
-        for link in all_news1:
-            news_link = link['data-url']
-            all_news.append(news_link)
-        return all_news
 
 def get_category_all(url):
     html = get_html(url)
@@ -104,8 +105,6 @@ def get_category_all(url):
             for u in j:
 
                 news = ('https://ria.ru'+ u['href'])
-
-
                 list_of_category.append(news)
 
             return list_of_category
