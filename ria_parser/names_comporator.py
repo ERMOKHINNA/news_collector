@@ -32,8 +32,8 @@ for title in news_list:
         if pattern and len(surname)>3 :
             news_with_person.append({
 
-                pattern.group(): (words_in_title['url'])
+                pattern.group(): (words_in_title['title'])
 
             })
 
-            pprint(news_with_person)
+            print(pattern.group(), words_in_title['title'])

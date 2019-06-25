@@ -25,7 +25,7 @@
                     <p>{{category.title}}</p>
                 {% endfor %}
                 {% if news_category.has_next %}<a href="{{ url_for('index.html', page = news_category.next_num) }}">Еще >></a>{% else %} {% endif %}
-                {% if news_category.has_next %}<a href="{{ url_for('index.html', page = news_category.next_num) }}">Older posts >></a>{% else %}{% endif %}
+                {% if news_category.has_prev %}<a href="{{ url_for('index.html', page = news_category.prev_num) }}">Older posts >></a>{% else %}{% endif %}
 
 
 
