@@ -5,7 +5,7 @@ import re
 from ria_parser.model import News
 from ria_parser.__init__ import create_app
 
-with open('/Users/nermohin/projects/diplom_project/news_collector/russian_surnames.csv', 'r', encoding='utf-8') as f:
+with open('russian_surnames.csv', 'r', encoding='utf-8') as f:
     fields = ['ID', 'Surname','Sex', 'PeoplesCount','WhenPeoplesCount', 'Source']
     surname_list =[]
     reader = csv.DictReader(f, fields, delimiter=';')
@@ -14,7 +14,7 @@ with open('/Users/nermohin/projects/diplom_project/news_collector/russian_surnam
 
 
 app = create_app()
-##surname_list = ['Путин', 'Медведев', 'Зеленский', 'Нарышкин']
+
 with app.app_context():
     news_list = News.query
 words_in_title = {}
