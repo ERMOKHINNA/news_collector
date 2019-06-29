@@ -190,9 +190,6 @@ def save_news(title, news_link , category):
 
 
 
-
-
-
 if __name__ == "__main__":
     with app.app_context():
         news_list = get_news_list(app.config['URL'])

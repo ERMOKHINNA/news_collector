@@ -14,7 +14,7 @@ with open('/Users/nermohin/projects/diplom_project/news_collector/russian_surnam
 
 surname_set = set(surname_list)
 app = create_app()
-##surname_list = ['Путин', 'Медведев', 'Зеленский', 'Нарышкин']
+
 with app.app_context():
     news_list = News.query
 words_in_title = {}
@@ -24,7 +24,7 @@ for news in news_list:
     set_news = set(set_list)
     if set_news.intersection(surname_set):
         pattern = set_news.intersection(surname_set)
-        if len(str(pattern)) > 7 :
+        if len(str(pattern)) > 7:
             news_with_person.append({
 
                 str(pattern): news.title
@@ -32,5 +32,5 @@ for news in news_list:
             pprint(news_with_person)
 
 print(news_with_person)
-##        pattern = re.search(r'\b' + surname+r'\b', news.title)
+
 
