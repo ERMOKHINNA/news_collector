@@ -1,7 +1,7 @@
 import schedule
 import time
 from webapp import create_app
-from webapp.lenta_pars import get_news
+from webapp.lenta_parser import get_news
 
 def get_save_news():
 	print('Parser running......')
