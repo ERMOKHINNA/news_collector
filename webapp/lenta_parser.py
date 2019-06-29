@@ -43,7 +43,10 @@ def get_news():
             if check_news_exist(url):
                 continue
             title = content.find('a').text
-            published= content.find('span', class_='g-date item__date').text[7::]
+            date_url = url.split("/")[4:7][::-1]
+            date_url = '/'.join( date_url)
+            published = datetime.strptime(date_url, '%d/%m/%Y')
+            #published= content.find('span', class_='g-date item__date').text[7::]
             html_news = get_html(url)
             soup = BeautifulSoup(html_news,'html.parser')
             #text = soup.find('div', class_="b-text clearfix js-topic__text").text

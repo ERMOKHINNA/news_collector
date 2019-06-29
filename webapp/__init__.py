@@ -7,9 +7,9 @@ def create_app():
     app.config.from_pyfile('config.py')
     db.init_app(app)
 
-    @app.route('/<int:page_num>')
+    @app.route('/')
     @app.route('/home/<int:page_num>')
-    def home(page_num):
+    def home(page_num=1):
         title = 'Новости'
         news_list = News.query.paginate(page=page_num,per_page=10,error_out=True)        
 

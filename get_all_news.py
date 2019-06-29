@@ -9,8 +9,9 @@ def get_save_news():
 	with app.app_context():
 	    get_news()
 
-schedule.every().day.at("00:00").do(get_save_news)
+get_save_news()
+# schedule.every().day.at("00:00").do(get_save_news)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
