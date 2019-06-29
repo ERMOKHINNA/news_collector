@@ -1,7 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 from webapp.model import db, News
+
 from datetime import datetime
+
 from webapp import create_app
 
 
@@ -33,21 +35,21 @@ def meta_info(url):
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
     all_news = soup.findAll('meta')
-    tags_list = {}
+    meta_list = {}
     for item in all_news:
         try:
             if item['name'] == 'analytics:rubric':
                 category = item['content']
-                tags_list['category'] = category
+                meta_list['category'] = category
             elif item['name'] == 'analytics:tags':
                 tags = item['content']
-                tags_list['tags'] = tags
+                meta_list['tags'] = tags
             elif item['name'] == 'analytics:title':
                 title = item['content']
-                tags_list['title'] = title
+                meta_list['title'] = title
         except KeyError:
             pass
-    return tags_list
+    return meta_list
 
 def get_category(url):
     html = get_html(url)

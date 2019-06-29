@@ -1,7 +1,9 @@
 import csv
+import os
 from pprint import pprint
-from webapp.model import News
-from webapp import create_app
+import re
+from ria_parser  import News
+from ria_parser import create_app
 
 with open('/Users/nermohin/projects/diplom_project/news_collector/russian_surnames.csv', 'r', encoding='utf-8') as f:
     fields = ['ID', 'Surname','Sex', 'PeoplesCount','WhenPeoplesCount', 'Source']
