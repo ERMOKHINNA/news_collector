@@ -11,7 +11,7 @@ def create_app():
     @app.route('/home/<int:page_num>')
     def home(page_num):
         title = 'Новости'
-        news_list = News.query.paginate(page=page_num,per_page=10,error_out=True)        
+        news_list = News.query.paginate(page=page_num, per_page=10, error_out=True)
 
         return render_template('index.html', page_title=title, news_list=news_list)
     return app  

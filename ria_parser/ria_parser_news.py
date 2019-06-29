@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-from ria_parser.model import db, News
-
-from ria_parser.__init__ import create_app
+from webapp.model import db, News
+from datetime import datetime
+from webapp import create_app
 
 
 app = create_app()
@@ -123,9 +123,10 @@ def get_else_news_list(url):
                 news_link = links.find('a')['href']
 
                 try:
-                    title = meta_info(news_link)['title']
+                    meta =meta_info(news_link)
+                    title = meta['title']
 
-                    category = meta_info(news_link)['category']
+                    category = meta['category']
                     list_of_news_links.append({
                         'news_link': news_link,
                         'category': category,
@@ -147,9 +148,9 @@ def get_news_list_from_main(url):
         if html:
 
             try:
-                title = meta_info(link)['title']
-
-                category = meta_info(link)['category']
+                meta = meta_info(link)
+                title = meta['title']
+                category = meta['category']
                 list_of_news_from_main.append({
                     'news_link': link,
                     'category': category,
@@ -160,31 +161,15 @@ def get_news_list_from_main(url):
                 pass
     return list_of_news_from_main
 
-
-##def get_text_of_news(url):
-##    news_text = []
-##    list_of_news = get_news_list(url)
-##    for news in list_of_news:
-##        html = get_html(news['news_link'])
-##        soup = BeautifulSoup(html, 'html.parser')
-##        text_of_news = soup.find('div', class_="article__text")
-##        news_text.append({
-##            'category': news['category'],
-##            'text': text_of_news.text
-##        })
-##    return news_text
-
-def save_news(title, news_link , category):
-    news_exists = News.query.filter(News.url_news == news_link).count()
+def save_news(title, news_link, published,  category):
+    news_exists = News.query.filter(News.url == news_link).count()
     if not news_exists:
-        news_news = News(title=title, url_news=news_link, category=category)
+        news_news = News(title=title, url=news_link, published=published, category=category)
         db.session.add(news_news)
         db.session.commit()
 
 #TODO добавить теги в базу, добавить словарь слов и тэгов для анализа
 
-
-#todo вывести дату новости
 #todo запуск парсреа по расписанию
 
 
@@ -192,11 +177,16 @@ def save_news(title, news_link , category):
 
 if __name__ == "__main__":
     with app.app_context():
-        news_list = get_news_list(app.config['URL'])
-        news_list_from_main = get_news_list_from_main(app.config['URL'])
-        news_list_else = get_else_news_list(app.config['URL'])
+        news_list = get_news_list(app.config['RIA_URL'])
+        news_list_from_main = get_news_list_from_main(app.config['RIA_URL'])
+        news_list_else = get_else_news_list(app.config['RIA_URL'])
 
         for news in news_list + news_list_from_main + news_list_else:
-            save_news(news['title'], news['news_link'], news['category'])
+            try:
+                part_string = news['news_link'].split('/')
+                date = datetime.strptime(part_string[3], '%Y%m%d')
+            except ValueError:
+                date = datetime.now()
+            save_news(news['title'], news['news_link'], date, news['category'])
     print("Success save")
 
