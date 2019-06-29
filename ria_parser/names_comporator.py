@@ -2,38 +2,35 @@ import csv
 import os
 from pprint import pprint
 import re
-from ria_parser.model import News
-from ria_parser.__init__ import create_app
+from ria_parser  import News
+from ria_parser import create_app
 
-with open('russian_surnames.csv', 'r', encoding='utf-8') as f:
+with open('/Users/nermohin/projects/diplom_project/news_collector/russian_surnames.csv', 'r', encoding='utf-8') as f:
     fields = ['ID', 'Surname','Sex', 'PeoplesCount','WhenPeoplesCount', 'Source']
     surname_list =[]
     reader = csv.DictReader(f, fields, delimiter=';')
     for surname in reader:
         surname_list.append(surname['Surname'])
 
-
+surname_set = set(surname_list)
 app = create_app()
-
+##surname_list = ['Путин', 'Медведев', 'Зеленский', 'Нарышкин']
 with app.app_context():
     news_list = News.query
 words_in_title = {}
 news_with_person = []
-for title in news_list:
-
-    for surname in surname_list:
-
-        words_in_title['title'] = title.title
-
-        words_in_title['url'] = title.url_news
-
-        pattern = re.search(r'\b' + surname+r'\b', title.title)
-
-        if pattern and len(surname)>3 :
+for news in news_list:
+    set_list = (news.title.split())
+    set_news = set(set_list)
+    if set_news.intersection(surname_set):
+        pattern = set_news.intersection(surname_set)
+        if len(str(pattern)) > 7 :
             news_with_person.append({
 
-                pattern.group(): (words_in_title['title'])
+                str(pattern): news.title
+             })
+            pprint(news_with_person)
 
-            })
+print(news_with_person)
+##        pattern = re.search(r'\b' + surname+r'\b', news.title)
 
-            print(pattern.group(), words_in_title['title'])
