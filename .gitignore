@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 env/
 .vscode/
 *.db
 ex.py
 __pycache__
+=======
+.idea/
+__pycache__/
+ria_parser/__pycache__/
+env
+webapp.db
+>>>>>>> origin/nick
