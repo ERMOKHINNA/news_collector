@@ -7,7 +7,7 @@ def get_save_news():
 	print('Parser running......')
 	app = create_app()
 	with app.app_context():
-	    get_news()
+		get_news()
 
 schedule.every().day.at("00:00").do(get_save_news)
 

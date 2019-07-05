@@ -190,5 +190,5 @@ if __name__ == "__main__":
             except ValueError:
                 date = datetime.now()
             save_news(news['title'], news['news_link'], date, news['category'])
-    print("Success save")
+    print("Success save", len(news_list + news_list_from_main + news_list_else))
 
